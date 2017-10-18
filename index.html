@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=windows-1250">
+  <meta name="generator" content="PSPad editor, www.pspad.com">
+  <title></title>
+  <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+  <form>
+    <label>Console : </label>
+    <select id="console" onChange="test();">
+        <option value="">&nbsp;</option>
+        <option value="3ds">3DS</option>
+        <option value="n64">N64</option>
+        <option value="snin">SNIN</option>
+        <option value="xbox360">XBOX360</option>
+    </select>
+  </form>
+  <hr>
+  <div id="n64" class="div">
+    <ul>
+      <li>Super Mario 64</li>
+      <li>1080° Snowboarding</li>
+      <li>Mario Kart 64</li>
+      <li>Perfect Dark</li>
+      <li>Donkey Kong 64</li>
+      <li>Mario Golf</li>
+      <li>GoldenEye</li>
+      <li>F-Zero X</li>
+      <li>Diddy Kong Racing</li>
+      <li>Wave Race</li>
+    </ul>
+  </div>
+  <div id="3ds" class="div">
+    <ul>
+      <li>Zelda Ocarina of Time</li>
+      <li>Zelda Majora's Mask</li>
+      <li>Luigi's Mansion 2</li>
+      <li>Resident Evil Revelation</li>
+    </ul>
+  </div>
+  <div id="snin" class="div">
+    <ul>
+      <li>Zelda 3 : A link to the past</li>
+      <li>Asterix et Obelix</li>
+      <li>Aladdin</li>
+      <li>Super Tennis</li>
+      <li>Fifa 96</li>
+      <li>Earthworm Jim</li>
+      <li>Earthworm Jim 2</li>
+    </ul>
+  </div>
+  <div id="xbox360" class="div">
+    <ul>
+      <li>Resident Evil 5</li>
+      <li>Resident Evil 6</li>
+    </ul>
+  </div>
+  <script src="jquery-3.2.1.js"></script>
+  <script>
+      $(".div").each(function(){ 
+        $(this).css({"visibility":"hidden"});
+      });
+  
+    function test(){
+      
+      var e = document.getElementById("console");
+      
+      $(".div").each(function(){ 
+        if ($(this).attr("id") === e.value){
+           $(this).css({"visibility":"visible"});
+        } else {
+          $(this).css({"visibility":"hidden"});
+        }
+      });
+    }
+    </script>
+  </body>
+</html>

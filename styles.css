@@ -1,0 +1,20 @@
+.div{
+  position: absolute; 
+  font-size:10px;
+  font-family:verdana;
+}
+body{
+  font-size:10px;
+  font-family:verdana;
+}
+option{
+  font-size:10px;
+  font-family:verdana;
+}
+select{
+  font-size:10px;
+  font-family:verdana;
+}
+hr{
+  border:thin solid black;
+}
