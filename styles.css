@@ -3,6 +3,19 @@
   font-size:10px;
   font-family:verdana;
 }
+.div2{
+  position: absolute; 
+  font-size:10px;
+  font-family:verdana;
+  border:thin solid black;
+}
+#div{
+  position: absolute; 
+  font-size:10px;
+  font-family:verdana;
+  height:100px;
+  width:100px;
+}
 body{
   font-size:10px;
   font-family:verdana;
