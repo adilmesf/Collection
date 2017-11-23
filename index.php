@@ -12,6 +12,9 @@
   <?php 
     require("Class\Console.class.php");
     require("Class\Jeux.class.php");
+    $db = new PDO('mysql:host=localhost;dbname=adil', 'root', 'root');
+    $oConsole = new console($db);
+    $oJeux = new jeux($db);
   ?>
   <table>
     <tr>
@@ -21,9 +24,7 @@
           <select id="console">
             <option value="">&nbsp;</option>
              <?php
-              $db = new PDO('mysql:host=localhost;dbname=adil', 'root', 'root');
-              $obj = new console($db);
-              $result = $obj->getList();
+              $result = $oConsole->getList();
               
               foreach ($result as $row) {
                 
@@ -34,7 +35,8 @@
           </select>
         </form>      
       </td>
-      <td><a href="#ajout">Ajouter un jeu</a></td>
+      <td><a href="admin\ajout_console.php">Ajouter une console</a></td>
+      <td><a href="ajout_jeux.php">Ajouter un jeu</a></td>
     </tr>
   </table>
   <hr>
@@ -62,20 +64,9 @@
     </ul>
   </div>
   <div id="2" class="div">
-
     <ul>
-    <!--
-      <li>Zelda 3 : A link to the past</li>
-      <li>Asterix et Obelix</li>
-      <li>Aladdin</li>
-      <li>Super Tennis</li>
-      <li>Fifa 96</li>
-      <li>Earthworm Jim</li>
-      <li>Earthworm Jim 2</li>  -->
       <?php
-        $db = new PDO('mysql:host=localhost;dbname=adil', 'root', 'root');
-        $obj = new jeux($db);
-        $result = $obj->getList();
+        $result = $oJeux->getList();
           
         foreach ($result as $row) {
              
@@ -84,7 +75,6 @@
                             
       ?>      
     </ul>
-    
   </div>
   <div id="xbox360" class="div">
     <ul>
@@ -94,13 +84,6 @@
   </div>
   <div id="RE5" class="div2">blablabla</div>
   <div id="RE6" class="div2">Resident Evil 6</div>
-  <div id="ajout" class="div2">
-    <form>
-      <label> Nom </label><input type="text" />  <br />
-      <label> Nom court </label><input type="text" value="" />  <br />
-      <label> Console </label><input type="text" value="" />  <br />
-    </form>
-  </div>
   <script>  
     /*
     $(".div").each(function(){ 
