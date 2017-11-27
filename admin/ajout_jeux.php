@@ -8,19 +8,18 @@
   <script src="jquery-3.2.1.js"></script>
   <script src="jqueryUI/jquery-ui.js"></script>
   <?php 
+    require("..\Class\Jeux.class.php");
     require("..\Class\Console.class.php");
-    require("..\Class\Constructeur.class.php");
     $db = new PDO('mysql:host=localhost;dbname=collection', 'root', 'root');
     
     /* Instanciation des objets */
     $oConsole = new console($db);
-    $oConstructeur = new constructeur($db);
+    $oJeux = new jeux($db);
 
-    $result = $oConsole->getLast();
-    
-    if (isset($_POST["nom_console"])){
+    $result = $oJeux->getLast();
+    if (isset($_POST["nom_jeux"]) && isset($_POST["console_jeux"])){
         
-        $obj->addConsole($_POST["id_console"],$_POST["nom_console"],$_POST["constructeur_console"]);
+        $oJeux->addJeux($_POST["console_jeux"],$_POST["nom_jeux"],$_POST["id_jeux"],$_POST["annee_jeux"]);
         header('Location: ..\index.php');
     }
     
@@ -31,25 +30,29 @@
       <table>
         <tr>
           <td><label> ID </label></td>
-          <td><input type="text" value="<?php echo ($result + 1) ;?>" name="id_console" /></td>
+          <td><input type="text" value="<?php echo ($result + 1) ;?>" name="id_jeux" /></td>
         </tr>
         <tr>
-          <td><label> Constructeur </label></td>
+          <td><label> Console </label></td>
           <td>
-          <select id="constructeur_console">
+          <select id="console_jeux" name="console_jeux">
             <?php 
-              $result = $oConstructeur->getList();
+              $result = $oConsole->getList();
               foreach ($result as $row) {
                 
-                echo "<option value=".$row["id_constructeur"].">".$row["nom_constructeur"]."</option>";
+                echo "<option value=".$row["id_console"].">".$row["nom_console"]."</option>";
               }   
             ?>
           </select>
           </td>
         </tr>
         <tr>
-          <td><label> Console </label></td>
-          <td><input type="text" value="" name="nom_console" /></td>
+          <td><label> Jeux </label></td>
+          <td><input type="text" value="" name="nom_jeux" /></td>
+        </tr>
+        <tr>
+          <td><label> Année </label></td>
+          <td><input type="date" value="" name="annee_jeux" /></td>
         </tr>
         <tr>
           <td colspan="2"><input type="submit" /></td>

@@ -12,7 +12,7 @@
   <?php 
     require("Class\Console.class.php");
     require("Class\Jeux.class.php");
-    $db = new PDO('mysql:host=localhost;dbname=adil', 'root', 'root');
+    $db = new PDO('mysql:host=localhost;dbname=collection', 'root', 'root');
     $oConsole = new console($db);
     $oJeux = new jeux($db);
   ?>
@@ -36,15 +36,16 @@
         </form>      
       </td>
       <td><a href="admin\ajout_console.php">Ajouter une console</a></td>
-      <td><a href="ajout_jeux.php">Ajouter un jeu</a></td>
+      <td><a href="admin\ajout_constructeur.php">Ajouter un constructeur</a></td>
+      <td><a href="admin\ajout_jeux.php">Ajouter un jeu</a></td>
     </tr>
   </table>
   <hr>
-  
+  <!--
   <div id="1" class="div">
     <ul>
       <li>Super Mario 64</li>
-      <li>1080° Snowboarding</li>
+      <li>1080ï¿½ Snowboarding</li>
       <li>Mario Kart 64</li>
       <li>Perfect Dark</li>
       <li>Donkey Kong 64</li>
@@ -63,19 +64,24 @@
       <li>Resident Evil Revelation</li>
     </ul>
   </div>
-  <div id="2" class="div">
-    <ul>
-      <?php
-        $result = $oJeux->getList();
-          
-        foreach ($result as $row) {
-             
-           echo "<li>".$row["nom_jeux"]."</li>";
-        }     
+  -->
+  <?php
+      $result = $oConsole->getList();
+              
+      foreach ($result as $row) {         
+        echo "<div id='".$row["id_console"]."' class='div'>";
+
+        $resultJeux = $oJeux->getListByConsole($row["id_console"]);
+        echo "<ul>";
+        foreach ($resultJeux as $rowJeux) {          
+          echo "<li>".$rowJeux["nom_jeux"]."</li>";
+        } 
+        echo "</ul>";
+        echo "</div>";    
+      }     
                             
-      ?>      
-    </ul>
-  </div>
+  ?>  
+
   <div id="xbox360" class="div">
     <ul>
       <li><a href="#RE5">Resident Evil 5</a></li>
@@ -85,11 +91,6 @@
   <div id="RE5" class="div2">blablabla</div>
   <div id="RE6" class="div2">Resident Evil 6</div>
   <script>  
-    /*
-    $(".div").each(function(){ 
-      $(this).css({"display":"none"});
-    }); 
-    */
     
     masquerDiv();
     masquerDiv2();
