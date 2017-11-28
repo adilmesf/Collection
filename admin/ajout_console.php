@@ -20,7 +20,7 @@
     
     if (isset($_POST["nom_console"])){
         
-        $obj->addConsole($_POST["id_console"],$_POST["nom_console"],$_POST["constructeur_console"]);
+        $oConsole->addConsole($_POST["id_console"],$_POST["nom_console"],$_POST["constructeur_console"]);
         header('Location: ..\index.php');
     }
     
@@ -36,7 +36,7 @@
         <tr>
           <td><label> Constructeur </label></td>
           <td>
-          <select id="constructeur_console">
+          <select id="constructeur_console" name="constructeur_console">
             <?php 
               $result = $oConstructeur->getList();
               foreach ($result as $row) {

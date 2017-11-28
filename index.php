@@ -12,16 +12,18 @@
   <?php 
     require("Class\Console.class.php");
     require("Class\Jeux.class.php");
+    require("Class\Constructeur.class.php");
     $db = new PDO('mysql:host=localhost;dbname=collection', 'root', 'root');
     $oConsole = new console($db);
     $oJeux = new jeux($db);
+    $oConstructeur = new constructeur($db);
   ?>
   <table>
     <tr>
       <td>
         <form>
           <label>Console : </label>
-          <select id="console">
+          <select id="console" class="select">
             <option value="">&nbsp;</option>
              <?php
               $result = $oConsole->getList();
@@ -35,36 +37,56 @@
           </select>
         </form>      
       </td>
-      <td><a href="admin\ajout_console.php">Ajouter une console</a></td>
+      <!--<td><a href="admin\ajout_console.php">Ajouter une console</a></td>-->
+      <td><a href="#ajoutConsole">Ajouter une console</a></td>
       <td><a href="admin\ajout_constructeur.php">Ajouter un constructeur</a></td>
       <td><a href="admin\ajout_jeux.php">Ajouter un jeu</a></td>
     </tr>
   </table>
   <hr>
-  <!--
-  <div id="1" class="div">
-    <ul>
-      <li>Super Mario 64</li>
-      <li>1080� Snowboarding</li>
-      <li>Mario Kart 64</li>
-      <li>Perfect Dark</li>
-      <li>Donkey Kong 64</li>
-      <li>Mario Golf</li>
-      <li>GoldenEye</li>
-      <li>F-Zero X</li>
-      <li>Diddy Kong Racing</li>
-      <li>Wave Race</li>
-    </ul>
+  <div id="ajoutJeux"></div>
+  <div id="ajoutConsole" class="div">
+    <?php 
+
+      $result = $oConsole->getLast();
+      
+      if (isset($_POST["nom_console"])){
+          
+          $oConsole->addConsole($_POST["id_console"],$_POST["nom_console"],$_POST["constructeur_console"]);
+      } 
+      ?>
+      <form method="POST" action="#">
+      <table>
+        <tr>
+          <td><label> ID </label></td>
+          <td><input type="text" value="<?php echo ($result + 1) ;?>" name="id_console" /></td>
+        </tr>
+        <tr>
+          <td><label> Constructeur </label></td>
+          <td>
+          <select id="constructeur_console" name="constructeur_console">
+            <?php 
+              $result = $oConstructeur->getList();
+              foreach ($result as $row) {
+                
+                echo "<option value=".$row["id_constructeur"].">".$row["nom_constructeur"]."</option>";
+              }   
+            ?>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label> Console </label></td>
+          <td><input type="text" value="" name="nom_console" /></td>
+        </tr>
+        <tr>
+          <td colspan="2"><input type="submit" /></td>
+        </tr>
+    </form>    
+  
+ 
   </div>
-  <div id="3ds" class="div">
-    <ul>
-      <li>Zelda Ocarina of Time</li>
-      <li>Zelda Majora's Mask</li>
-      <li>Luigi's Mansion 2</li>
-      <li>Resident Evil Revelation</li>
-    </ul>
-  </div>
-  -->
+  <div id="ajoutConstructeur"></div>
   <?php
       $result = $oConsole->getList();
               
@@ -81,7 +103,7 @@
       }     
                             
   ?>  
-
+  <!--
   <div id="xbox360" class="div">
     <ul>
       <li><a href="#RE5">Resident Evil 5</a></li>
@@ -90,6 +112,7 @@
   </div>
   <div id="RE5" class="div2">blablabla</div>
   <div id="RE6" class="div2">Resident Evil 6</div>
+  -->
   <script>  
     
     masquerDiv();
@@ -117,7 +140,7 @@
     
     }
          
-    $("select").change(function(){
+    $(".select").change(function(){
       $(".div").each(function(){ 
         if ($(this).attr("id") === $("select").val()){
            $(this).fadeIn();
