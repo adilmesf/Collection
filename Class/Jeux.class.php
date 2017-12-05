@@ -3,6 +3,7 @@
   
     private $_db;
     private $jeux = [];
+    private $_cpt = 0;
 
     public function __construct($db)
     {
@@ -16,6 +17,18 @@
         
       return $jeux;
     }
+
+    public function afficherCpt()
+    {
+      echo "Nombre de jeux : " . $this->_cpt . "<br>";
+    }
+  
+    public function addCpt()
+    {
+      // On ajoute 1 à notre attribut $_experience.
+      $this->_cpt = $this->_cpt + 1;
+    }
+
     public function getLast()
     {
       $sql = 'SELECT 	id_jeux  FROM jeux ORDER BY id_jeux DESC LIMIT 1';
@@ -39,7 +52,13 @@
       $sql = 'insert into jeux(id_jeux, nom_jeux, id_console, annee_jeux) values ('.$id_jeux.',"'.$nom_jeux.'",'.$id_console.',"'.$annee_jeux.'")';
       $this->_db->exec($sql);
     }        
-      
+    
+    public function deleteJeux($id_jeux)
+    {
+      $sql = 'delete from jeux where id_jeux = '.$id_jeux ;
+      $this->_db->exec($sql);
+    }
+
     public function setDb(PDO $db)
     {
       $this->_db = $db;

@@ -40,7 +40,7 @@ session_start();
     <tr>
       <td>
         <form>
-          <label>Console : </label>
+          <label class="texte1">Console : </label>
           <select id="console" class="select" name="select_console_index">
             <option value="">&nbsp;</option>
              <?php
@@ -59,135 +59,58 @@ session_start();
           <input type="hidden" value="" class="id_cache"/>
         </form>      
       </td>
-      <!--<td><a href="admin\ajout_console.php">Ajouter une console</a></td>-->
-      <td><a href="#ajoutConsole" class="lien">Ajouter une console</a></td>
+      <td><a href="#ajoutConsole"      class="lien">Ajouter une console</a></td>
       <td><a href="#ajoutConstructeur" class="lien">Ajouter un constructeur</a></td>
-      <td><a href="#ajoutJeux" class="lien">Ajouter un jeu</a></td>
+      <td><a href="#ajoutJeux"         class="lien">Ajouter un jeu</a></td>
     </tr>
   </table>
 
   <hr>
   <!-- Ajout d'un jeu -->
   <div id="ajoutJeux" class="div2">
-    <?php
-      $result = $oJeux->getLast();
-    ?>
-    <form method="POST" action="">
-      <table>
-        <tr>
-          <td><label> ID </label></td>
-          <td><input type="text" value="<?php echo ($result + 1) ;?>" name="id_jeux" /></td>
-        </tr>
-        <tr>
-          <td><label> Console </label></td>
-          <td>
-          <select id="console_jeux" name="console_jeux">
-            <?php 
-              $result = $oConsole->getList();
-              foreach ($result as $row) {
-                
-                if (isset($_SESSION["console_choisie"]) && $_SESSION["console_choisie"] == $row["id_console"]){
-                  echo "<option value=".$row["id_console"]." selected>".$row["nom_console"]."</option>";
-                } else {
-                  echo "<option value=".$row["id_console"].">".$row["nom_console"]."</option>";
-                }
-              }   
-            ?>
-          </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label> Jeux </label></td>
-          <td><input type="text" value="" name="nom_jeux" /></td>
-        </tr>
-        <tr>
-          <td><label> Année </label></td>
-          <td><input type="date" value="" name="annee_jeux" /></td>
-        </tr>
-        <tr>
-          <td colspan="2"><input type="submit" /></td>
-        </tr>
-      </table>
-    </form>      
+     <?php
+      require("admin\ajout_jeux.php");
+     ?>
   </div>
   <!-- Fin Ajout d'un jeu -->
 
   <!-- Ajout d'une console -->
   <div id="ajoutConsole" class="div2">
-    <?php 
-      $result = $oConsole->getLast();
-      ?>
-      <form method="POST" action="">
-      <table>
-        <tr>
-          <td><label> ID </label></td>
-          <td><input type="text" value="<?php echo ($result + 1) ;?>" name="id_console" /></td>
-        </tr>
-        <tr>
-          <td><label> Constructeur </label></td>
-          <td>
-          <select id="constructeur_console" name="constructeur_console">
-            <?php 
-              $result = $oConstructeur->getList();
-              foreach ($result as $row) {
-                
-                echo "<option value=".$row["id_constructeur"].">".$row["nom_constructeur"]."</option>";
-              }   
-            ?>
-          </select>
-          </td>
-        </tr>
-        <tr>
-          <td><label> Console </label></td>
-          <td><input type="text" value="" name="nom_console" /></td>
-        </tr>
-        <tr>
-          <td colspan="2"><input type="submit" /></td>
-        </tr>
-      </table>
-    </form>    
+    <?php
+      require("admin\ajout_console.php");
+    ?>
   </div>
   <!-- Fin Ajout d'une console -->
 
   <!-- Ajout d'un constructeur -->
   <div id="ajoutConstructeur" class="div2">
-    <?php
-      $result = $oConstructeur->getLast();
-    ?>
-    <form method="POST" action="">
-        <table>
-          <tr>
-            <td><label> ID </label></td>
-            <td><input type="text" value="<?php echo ($result + 1) ;?>" name="id_constructeur" /></td>
-          </tr>
-          <tr>
-            <td><label> Nom </label></td>
-            <td><input type="text" value="" name="nom_constructeur" /></td>
-          </tr>
-          <tr>
-            <td colspan="2"><input type="submit" /></td>
-          </tr>
-        </table>
-    </form>      
+      <?php 
+        require("admin\ajout_constructeur.php");      
+      ?>
   </div>
   <!-- Fin Ajout d'un constructeur -->
 
   <!-- Affichage des resultats -->
   <?php
-      $result = $oConsole->getList();
-              
+      $result = $oConsole->getList();    
       foreach ($result as $row) {         
         echo "<div id='".$row["id_console"]."' class='div'>";
+
+        $console[] = array();
+
+        $console[$row["nom_console"]] = new jeux($db);
 
         $resultJeux = $oJeux->getListByConsole($row["id_console"]);
         echo "<table>";
         foreach ($resultJeux as $rowJeux) {          
           echo "<tr>
-                  <td>".$rowJeux["nom_jeux"]."</td>
-                  <td>Supprimer</td>
+                  <td class='texte1'>".$rowJeux["nom_jeux"]."</td>
+                  <td><a href='admin\delete_Jeux.php?id=".$rowJeux["id_jeux"]."'>x</a></td>
                 </tr>";
+          $console[$row["nom_console"]]->addCpt();
         } 
         echo "</table>";
+        $console[$row["nom_console"]]->afficherCpt();
         echo "</div>";    
       }     
                             
@@ -253,7 +176,7 @@ session_start();
     }
 
     /* Quand on clique sur un lien */
-    $("a").click(function (){
+    $(".lien").click(function (){
       masquerDiv2();
       var val = $(this).attr("href");
       $(val).fadeIn();
